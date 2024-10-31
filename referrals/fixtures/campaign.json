@@ -1,0 +1,46 @@
+[
+  {
+    "model": "referrals.campaign",
+    "pk": 1,
+    "fields": {
+      "title": "Хэллоуинская акция",
+      "description": "Устрашающе крутые скидки! В честь Хэллоуина дарим пугающе выгодные предложения на ваши любимые коллекции.",
+      "promocode": "SPOOKY2024",
+      "reward": 3.25,
+      "active_since": "2024-10-20",
+      "active_till": "2024-11-03",
+      "discount": 25,
+      "created_at": "2024-10-31 20:44:36",
+      "updated_at": "2024-10-31 20:44:36"
+    }
+  },
+  {
+    "model": "referrals.campaign",
+    "pk": 2,
+    "fields": {
+      "title": "Распродажа 11.11",
+      "description": "Активируются самые низкие цены года, когда можно купить товары с огромными скидками до 90%!",
+      "promocode": "ELEVEN11",
+      "reward": 0.75,
+      "active_since": "2024-10-28",
+      "active_till": "2024-11-12",
+      "created_at": "2024-10-31 20:44:36",
+      "updated_at": "2024-10-31 20:44:36"
+    }
+  },
+  {
+    "model": "referrals.campaign",
+    "pk": 3,
+    "fields": {
+      "title": "Промокод от канала IT POP",
+      "description": "",
+      "promocode": "IT_POP_95",
+      "reward": 1.9,
+      "active_since": "2024-01-01",
+      "active_till": "2025-01-01",
+      "discount": 5,
+      "created_at": "2024-10-31 20:44:36",
+      "updated_at": "2024-10-31 20:44:36"
+    }
+  }
+]
