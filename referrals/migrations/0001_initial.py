@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Program',
+            name='Campaign',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Создано')),
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='SimplifiedAffiliate',
+            name='ReferralStatSimplified',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
             ],
@@ -77,12 +77,12 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Изменено')),
                 ('referrals_number', models.IntegerField(default=0, verbose_name='Кол-во приведённых клиентов')),
                 ('affiliate', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='stats', to=settings.AUTH_USER_MODEL, verbose_name='Участник')),
-                ('program', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='stats', to='examples.program', verbose_name='Реферальная программа')),
+                ('campaign', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='stats', to='referrals.campaign', verbose_name='Реферальная программа')),
             ],
             options={
                 'verbose_name': 'Статистика по реферальной программе',
                 'verbose_name_plural': 'Статистика по реферальным программам',
-                'unique_together': {('program', 'affiliate')},
+                'unique_together': {('campaign', 'affiliate')},
             },
         ),
     ]

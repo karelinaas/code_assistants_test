@@ -1,10 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from examples.models.base import DeactivateAbstract, TimeStampAbstract
+from referrals.models.base import DeactivateAbstract, TimeStampAbstract
 
 
-class Program(TimeStampAbstract, DeactivateAbstract):
+class Campaign(TimeStampAbstract, DeactivateAbstract):
     title = models.CharField(max_length=255, verbose_name='Название')
     description = models.CharField(null=True, max_length=255, verbose_name='Описание')
     promocode = models.CharField(max_length=10, verbose_name='Промокод')
@@ -26,8 +26,8 @@ class Affiliate(AbstractUser, TimeStampAbstract):
 
 
 class ReferralStat(TimeStampAbstract):
-    program = models.ForeignKey(
-        Program,
+    campaign = models.ForeignKey(
+        Campaign,
         verbose_name='Реферальная программа',
         on_delete=models.CASCADE,
         related_name='stats',
@@ -44,4 +44,4 @@ class ReferralStat(TimeStampAbstract):
         verbose_name = 'Статистика по реферальной программе'
         verbose_name_plural = 'Статистика по реферальным программам'
 
-        unique_together = ('program', 'affiliate',)
+        unique_together = ('campaign', 'affiliate',)

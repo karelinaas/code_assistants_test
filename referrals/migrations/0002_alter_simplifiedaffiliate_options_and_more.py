@@ -6,33 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('examples', '0001_initial'),
+        ('referrals', '0001_initial'),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='simplifiedaffiliate',
+            name='referralstatsimplified',
             options={'verbose_name': 'Упрощённая статистика', 'verbose_name_plural': 'Упрощённая статистика'},
         ),
         migrations.AddField(
-            model_name='simplifiedaffiliate',
+            model_name='referralstatsimplified',
             name='promocode',
             field=models.CharField(default=123, max_length=10, verbose_name='Промокод'),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='simplifiedaffiliate',
+            model_name='referralstatsimplified',
             name='referrals_number',
             field=models.IntegerField(default=0, verbose_name='Кол-во приведённых клиентов'),
         ),
         migrations.AddField(
-            model_name='simplifiedaffiliate',
+            model_name='referralstatsimplified',
             name='username',
             field=models.CharField(default=123, max_length=100, verbose_name='Имя пользователя'),
             preserve_default=False,
         ),
         migrations.AlterUniqueTogether(
-            name='simplifiedaffiliate',
+            name='referralstatsimplified',
             unique_together={('promocode', 'username')},
         ),
     ]
