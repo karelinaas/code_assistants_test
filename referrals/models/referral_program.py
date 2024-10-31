@@ -9,6 +9,7 @@ class Campaign(TimeStampAbstract, DeactivateAbstract):
     description = models.CharField(null=True, max_length=255, verbose_name='Описание')
     promocode = models.CharField(max_length=20, verbose_name='Промокод')
     reward = models.FloatField(verbose_name='Размер вознаграждения')
+    discount = models.IntegerField(null=True, blank=True, verbose_name='Размер скидки')
     active_since = models.DateField(verbose_name='Активна с')
     active_till = models.DateField(verbose_name='Активна до')
 
