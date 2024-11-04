@@ -48,18 +48,18 @@ class Command(BaseCommand):
             username = self.__faker.word()
             self.__affiliate_usernames.append(username)
 
-            affiliates_bulk_create.append(
-                Affiliate(
-                    password=self.__faker.password(),
-                    is_superuser=False,
-                    username=username,
-                    first_name=self.__faker.first_name(),
-                    last_name=self.__faker.last_name(),
-                    is_staff=False,
-                    is_active=True,
-                    email=self.__faker.email(),
-                )
+            affiliate = Affiliate(
+                is_superuser=False,
+                username=username,
+                first_name=self.__faker.first_name(),
+                last_name=self.__faker.last_name(),
+                is_staff=False,
+                is_active=True,
+                email=self.__faker.email(),
             )
+            affiliate.set_password(self.__faker.password())
+
+            affiliates_bulk_create.append(affiliate)
 
         affiliates = Affiliate.objects.bulk_create(affiliates_bulk_create)
         self.__affiliate_pks = [affiliate.pk for affiliate in affiliates]
