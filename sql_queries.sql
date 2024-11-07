@@ -92,3 +92,48 @@ JOIN
     referrals_campaign c ON rs.campaign_id = c.id
 ORDER BY
     a.username, c.promocode;
+
+
+-- Amazon CodeWhisperer
+WITH campaign_averages AS (
+    SELECT
+        campaign_id,
+        AVG(referrals_number) AS avg_referrals
+    FROM
+        referrals_referralstat
+    GROUP BY
+        campaign_id
+)
+SELECT
+    ra.username AS affiliate_username,
+    rc.promocode AS campaign_promocode,
+    rs.referrals_number AS user_referrals,
+    ROUND(ca.avg_referrals, 2) AS average_referrals,
+    ROUND(rs.referrals_number - ca.avg_referrals, 2) AS difference_from_average
+FROM
+    referrals_referralstat rs
+JOIN
+    referrals_affiliate ra ON rs.affiliate_id = ra.id
+JOIN
+    referrals_campaign rc ON rs.campaign_id = rc.id
+JOIN
+    campaign_averages ca ON rs.campaign_id = ca.campaign_id
+ORDER BY
+    rc.promocode,
+    difference_from_average DESC;
+
+---- с просьбой использовать оконные функции и не выводить столбец difference_from_average:
+SELECT
+    ra.username AS affiliate_username,
+    rc.promocode AS campaign_promocode,
+    rs.referrals_number AS user_referrals,
+    ROUND(AVG(rs.referrals_number) OVER (PARTITION BY rs.campaign_id), 2) AS average_referrals
+FROM
+    referrals_referralstat rs
+JOIN
+    referrals_affiliate ra ON rs.affiliate_id = ra.id
+JOIN
+    referrals_campaign rc ON rs.campaign_id = rc.id
+ORDER BY
+    rc.promocode,
+    rs.referrals_number DESC;
