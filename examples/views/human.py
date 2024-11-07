@@ -4,8 +4,8 @@ from django.db.models import BooleanField, Case, F, When
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from examples.serializers.human import ReferralStatListSerializer
 from referrals.models import ReferralStat
+from ..serializers.human import ReferralStatListSerializer
 
 
 class ReferralStatListView(generics.ListAPIView):

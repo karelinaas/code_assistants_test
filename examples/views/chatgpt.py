@@ -1,8 +1,8 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from examples.serializers.chatgpt import ReferralStatSerializer
 from referrals.models import ReferralStat
+from ..serializers.chatgpt import ReferralStatSerializer
 
 
 class ReferralStatsListView(generics.ListAPIView):
