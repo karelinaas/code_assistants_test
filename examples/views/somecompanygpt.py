@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from referrals.models import ReferralStat
-from ..serializers.yandexgpt import ReferralStatSerializer
+from ..serializers.somecompanygpt import ReferralStatSerializer
 
 
 class ReferralStatsListAPIView(ListAPIView):
