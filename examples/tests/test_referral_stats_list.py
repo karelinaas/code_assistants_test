@@ -1,20 +1,27 @@
 import random
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from django.test import TestCase
+from django.urls import NoReverseMatch, reverse
 from faker import Faker
+from rest_framework.test import APIClient
 
 from referrals.models import Affiliate, Campaign, ReferralStat
+from ..sources import ENDPOINT_NAMES
 
 
 class TestReferralStatsList(TestCase):
     user: Affiliate
-    another_user: Affiliate
+    client: APIClient
 
     CAMPAIGN_REWARDS = [0.25, 4, 1.10]
     REFERRALS_NUMBERS = [1222, 667, 305]
 
-    def setUpClass(self) -> None:
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.client_class = APIClient
         faker = Faker()
 
         affiliates_bulk_create = [
@@ -29,15 +36,14 @@ class TestReferralStatsList(TestCase):
             ) for _ in range(2)
         ]
         affiliates = Affiliate.objects.bulk_create(affiliates_bulk_create)
-        self.user = affiliates[0]
-        self.another_user = affiliates[1]
+        cls.user = affiliates[0]
 
         campaigns_bulk_create = [
             Campaign(
                 title=faker.sentence(nb_words=3),
                 description=faker.sentence(nb_words=10),
                 promocode=faker.word().upper(),
-                reward=self.CAMPAIGN_REWARDS[i],
+                reward=cls.CAMPAIGN_REWARDS[i],
                 discount=random.randint(5, 10),
                 active_since=datetime.today() - timedelta(days=3),
                 active_till=datetime.today() + timedelta(days=3),
@@ -48,14 +54,58 @@ class TestReferralStatsList(TestCase):
         stats_bulk_create = [
             ReferralStat(
                 campaign=campaigns[i],
-                affiliate=self.another_user if i == 2 else self.user,
-                referrals_number=self.REFERRALS_NUMBERS[i],
+                affiliate=affiliates[1] if i == 2 else cls.user,
+                referrals_number=cls.REFERRALS_NUMBERS[i],
             ) for i in range(3)
         ]
         ReferralStat.objects.bulk_create(stats_bulk_create)
 
     def test_referral_stats_list(self):
-        ...
+        for endpoint_name in ENDPOINT_NAMES:
+            with self.subTest(endpoint_name=endpoint_name):
+                self.client.force_authenticate(user=self.user)
+                try:
+                    response = self.client.get(reverse(f'examples:{endpoint_name}'))
+                except NoReverseMatch:
+                    continue
+
+                response_data = response.json()
+                self.assertEqual(response.status_code, HTTPStatus.OK)
+                self.assertEqual(len(response_data), 2)
+                self.assertTrue(response_data[1]['is_campaign_active'])
+                self.assertTrue(response_data[0]['is_campaign_active'])
+                self.assertEqual(response_data[1]['referrals_number'], self.REFERRALS_NUMBERS[0])
+                self.assertEqual(response_data[0]['referrals_number'], self.REFERRALS_NUMBERS[1])
+                self.assertEqual(response_data[1]['total_earned'], self.REFERRALS_NUMBERS[0] * self.CAMPAIGN_REWARDS[0])
+                self.assertEqual(response_data[0]['total_earned'], self.REFERRALS_NUMBERS[1] * self.CAMPAIGN_REWARDS[1])
+
+    def test_referral_stats_list_unauthorized(self):
+        for endpoint_name in ENDPOINT_NAMES:
+            with self.subTest(endpoint_name=endpoint_name):
+                try:
+                    response = self.client.get(reverse(f'examples:{endpoint_name}'))
+                except NoReverseMatch:
+                    continue
+
+                self.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
+                self.assertEqual(response.json(), {'detail': 'Authentication credentials were not provided.'})
 
     def test_referral_stats_list_outdated_campaigns(self):
-        ...
+        Campaign.objects.update(
+            active_since=datetime.today() - timedelta(days=10),
+            active_till=datetime.today() - timedelta(days=3),
+        )
+
+        for endpoint_name in ENDPOINT_NAMES:
+            with self.subTest(endpoint_name=endpoint_name):
+                self.client.force_authenticate(user=self.user)
+                try:
+                    response = self.client.get(reverse(f'examples:{endpoint_name}'))
+                except NoReverseMatch:
+                    continue
+
+                response_data = response.json()
+                self.assertEqual(response.status_code, HTTPStatus.OK)
+                self.assertEqual(len(response_data), 2)
+                self.assertFalse(response_data[1]['is_campaign_active'])
+                self.assertFalse(response_data[0]['is_campaign_active'])

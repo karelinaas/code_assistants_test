@@ -26,4 +26,4 @@ class ReferralStatListView(generics.ListAPIView):
                 default=False,
                 output_field=BooleanField(),
             )
-        )
+        ).order_by('-pk')
