@@ -137,3 +137,32 @@ JOIN
 ORDER BY
     rc.promocode,
     rs.referrals_number DESC;
+
+
+-- GigaCODE
+SELECT
+    r.promocode,
+    a.username,
+    rs.referrals_number,
+    (SELECT AVG(rs2.referrals_number) FROM referrals_referralstat rs2 WHERE rs2.campaign_id = rs.campaign_id) as avg_referrals
+FROM
+    referrals_campaign r
+JOIN
+    referrals_referralstat rs ON r.id = rs.campaign_id
+JOIN
+    referrals_affiliate a ON rs.affiliate_id = a.id;
+
+---- с просьбой использовать оконные функции:
+SELECT
+    r.promocode,
+    a.username,
+    rs.referrals_number,
+    AVG(rs2.referrals_number) OVER (PARTITION BY rs.campaign_id) as avg_referrals
+FROM
+    referrals_campaign r
+JOIN
+    referrals_referralstat rs ON r.id = rs.campaign_id
+JOIN
+    referrals_affiliate a ON rs.affiliate_id = a.id
+JOIN
+    referrals_referralstat rs2 ON r.id = rs2.campaign_id;
