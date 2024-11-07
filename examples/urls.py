@@ -9,8 +9,10 @@ from .sources import (
     ENDPOINT_NAME_GIGACODE,
     ENDPOINT_NAME_YANDEX_CODE_ASSISTANT,
 )
-from .views.human import ReferralStatListView as ReferralStatListViewHuman
+from .views.amazon_codewhisperer import ReferralStatListView as ReferralStatListViewAmazonCodeWhisperer
 from .views.chatgpt import ReferralStatsListView as ReferralStatListViewChatGPT
+from .views.github_copilot import ReferralStatListView as ReferralStatListViewGithubCopilot
+from .views.human import ReferralStatListView as ReferralStatListViewHuman
 
 app_name = 'examples'
 
@@ -18,5 +20,6 @@ urlpatterns = [
     path('auth', views.obtain_auth_token),
     path('human', ReferralStatListViewHuman.as_view(), name=ENDPOINT_NAME_HUMAN),
     path('chatgpt', ReferralStatListViewChatGPT.as_view(), name=ENDPOINT_NAME_CHATGPT),
-    path('github-copilot', ReferralStatListViewChatGPT.as_view(), name=ENDPOINT_NAME_GITHUB_COPILOT),
+    path('github-copilot', ReferralStatListViewGithubCopilot.as_view(), name=ENDPOINT_NAME_GITHUB_COPILOT),
+    path('amazon-codewhisperer', ReferralStatListViewAmazonCodeWhisperer.as_view(), name=ENDPOINT_NAME_AMAZON_CODEWHISPERER),
 ]
