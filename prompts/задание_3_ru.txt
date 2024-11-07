@@ -1,4 +1,6 @@
-Hi, I have the following tables for PostgreSQL database:
+Привет!
+
+У меня есть следующие таблицы для БД на движке PostgreSQL:
 
 ```sql
 -- Таблица с пользователями
@@ -59,5 +61,5 @@ create table referrals_referralstat
 );
 ```
 
-Please create an SQL query showing a comparison of the number of referrals each user brought to the program with the average number of referrals for the program.
-Include such fields as campaign promocode and affiliate username into the query as well.
+Напиши мне, пожалуйста, sql-запрос, показывающий сравнение кол-ва рефералов, приведенных в программу каждым пользователем, со средним кол-вом рефералов по программе.
+Также включи в запрос поля с промокодом программы и именем пользователя.

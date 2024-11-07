@@ -50,3 +50,45 @@ JOIN
     referrals_campaign c ON rs.campaign_id = c.id
 ORDER BY
     a.username, c.promocode;
+
+
+-- GitHub Copilot
+SELECT
+    a.username,
+    c.promocode,
+    rs.referrals_number,
+    avg_stats.avg_referrals_number,
+    rs.referrals_number - avg_stats.avg_referrals_number AS difference
+FROM
+    referrals_referralstat rs
+JOIN
+    referrals_affiliate a ON rs.affiliate_id = a.id
+JOIN
+    referrals_campaign c ON rs.campaign_id = c.id
+JOIN
+    (
+        SELECT
+            campaign_id,
+            AVG(referrals_number) AS avg_referrals_number
+        FROM
+            referrals_referralstat
+        GROUP BY
+            campaign_id
+    ) avg_stats ON rs.campaign_id = avg_stats.campaign_id
+ORDER BY
+    a.username, c.promocode;
+
+---- с просьбой использовать оконные функции и не выводить столбец difference:
+SELECT
+    a.username,
+    c.promocode,
+    rs.referrals_number,
+    AVG(rs.referrals_number) OVER (PARTITION BY rs.campaign_id) AS avg_referrals_number
+FROM
+    referrals_referralstat rs
+JOIN
+    referrals_affiliate a ON rs.affiliate_id = a.id
+JOIN
+    referrals_campaign c ON rs.campaign_id = c.id
+ORDER BY
+    a.username, c.promocode;
