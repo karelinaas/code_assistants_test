@@ -9,6 +9,8 @@ from referrals.models import ReferralStat
 class ReferralStatSerializer(serializers.ModelSerializer):
     is_campaign_active = serializers.SerializerMethodField()
     total_earned = serializers.SerializerMethodField()
+    # Правки 1, 2 из 2: вместо имени программы возвращалось ID, потом перепутал название поля в программе.
+    campaign = serializers.CharField(source='campaign.title', read_only=True)
 
     class Meta:
         model = ReferralStat

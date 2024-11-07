@@ -80,6 +80,8 @@ class TestReferralStatsList(TestCase):
                 self.assertEqual(response_data[0]['referrals_number'], self.REFERRALS_NUMBERS[1])
                 self.assertEqual(response_data[1]['total_earned'], self.REFERRALS_NUMBERS[0] * self.CAMPAIGN_REWARDS[0])
                 self.assertEqual(response_data[0]['total_earned'], self.REFERRALS_NUMBERS[1] * self.CAMPAIGN_REWARDS[1])
+                self.assertTrue(isinstance(response_data[0]['campaign'], str), msg=endpoint_name)
+                self.assertTrue(isinstance(response_data[1]['campaign'], str), msg=endpoint_name)
 
     def test_referral_stats_list_unauthorized(self):
         for endpoint_name in ENDPOINT_NAMES:
