@@ -168,7 +168,7 @@ JOIN
     referrals_referralstat rs2 ON r.id = rs2.campaign_id;
 
 
--- YandexGPT
+-- SomeCompanyGPT
 SELECT
     referrals_affiliate.username,
     referrals_campaign.promocode,
