@@ -166,3 +166,21 @@ JOIN
     referrals_affiliate a ON rs.affiliate_id = a.id
 JOIN
     referrals_referralstat rs2 ON r.id = rs2.campaign_id;
+
+
+-- YandexGPT
+SELECT
+    referrals_affiliate.username,
+    referrals_campaign.promocode,
+    COUNT(referrals_referralstat.id) AS total_referrals,
+    AVG(COUNT(referrals_referralstat.id)) OVER (PARTITION BY referrals_campaign.id) AS avg_referrals
+FROM
+    referrals_affiliate
+JOIN
+    referrals_referralstat ON referrals_affiliate.id = referrals_referralstat.affiliate_id
+JOIN
+    referrals_campaign ON referrals_referralstat.campaign_id = referrals_campaign.id
+GROUP BY
+    referrals_affiliate.username, referrals_campaign.promocode
+ORDER BY
+    avg_referrals DESC;
