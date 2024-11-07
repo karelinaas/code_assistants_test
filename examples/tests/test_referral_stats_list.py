@@ -69,7 +69,7 @@ class TestReferralStatsList(TestCase):
                 except NoReverseMatch:
                     continue
 
-                print('-' * 20, f'Test {endpoint_name}`s stats list API.')
+                print('-' * 20, f'1) Test {endpoint_name}`s stats list API.')
 
                 response_data = response.json()
                 self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -91,7 +91,7 @@ class TestReferralStatsList(TestCase):
                 except NoReverseMatch:
                     continue
 
-                print('-' * 20, f'Test {endpoint_name}`s stats list API from unauthorized user.')
+                print('-' * 20, f'3) Test {endpoint_name}`s stats list API from unauthorized user.')
 
                 self.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
                 self.assertEqual(response.json(), {'detail': 'Authentication credentials were not provided.'})
@@ -110,7 +110,7 @@ class TestReferralStatsList(TestCase):
                 except NoReverseMatch:
                     continue
 
-                print('-' * 20, f'Test {endpoint_name}`s stats list API (with outdated campaigns).')
+                print('-' * 20, f'2) Test {endpoint_name}`s stats list API (with outdated campaigns).')
 
                 response_data = response.json()
                 self.assertEqual(response.status_code, HTTPStatus.OK)

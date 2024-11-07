@@ -18,4 +18,5 @@ urlpatterns = [
     path('auth', views.obtain_auth_token),
     path('human', ReferralStatListViewHuman.as_view(), name=ENDPOINT_NAME_HUMAN),
     path('chatgpt', ReferralStatListViewChatGPT.as_view(), name=ENDPOINT_NAME_CHATGPT),
+    path('github-copilot', ReferralStatListViewChatGPT.as_view(), name=ENDPOINT_NAME_GITHUB_COPILOT),
 ]
