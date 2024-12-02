@@ -83,6 +83,11 @@ class TestReferralStatsList(TestCase):
                 self.assertTrue(isinstance(response_data[0]['campaign'], str), msg=endpoint_name)
                 self.assertTrue(isinstance(response_data[1]['campaign'], str), msg=endpoint_name)
 
+                self.assertEqual(
+                    set(response.json()[0].keys()),
+                    {'id', 'campaign', 'referrals_number', 'is_campaign_active', 'total_earned'},
+                )
+
     def test_referral_stats_list_unauthorized(self):
         for endpoint_name in ENDPOINT_NAMES:
             with self.subTest(endpoint_name=endpoint_name):
