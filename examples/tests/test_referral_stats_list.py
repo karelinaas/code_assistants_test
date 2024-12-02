@@ -1,3 +1,4 @@
+import logging
 import random
 from datetime import datetime, timedelta
 from http import HTTPStatus
@@ -14,6 +15,7 @@ from ..sources import ENDPOINT_NAMES
 class TestReferralStatsList(TestCase):
     user: Affiliate
     client: APIClient
+    logger: logging.Logger
 
     CAMPAIGN_REWARDS = [0.25, 4, 1.10]
     REFERRALS_NUMBERS = [1222, 667, 305]
@@ -21,6 +23,7 @@ class TestReferralStatsList(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.logger = logging.getLogger('examples.tests')
         cls.client_class = APIClient
         faker = Faker()
 
@@ -69,7 +72,7 @@ class TestReferralStatsList(TestCase):
                 except NoReverseMatch:
                     continue
 
-                print(f'1) Test {endpoint_name}`s stats list API.')
+                self.logger.info(f'1) Test {endpoint_name}`s stats list API.')
 
                 response_data = response.json()
                 self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -82,7 +85,6 @@ class TestReferralStatsList(TestCase):
                 self.assertEqual(response_data[0]['total_earned'], self.REFERRALS_NUMBERS[1] * self.CAMPAIGN_REWARDS[1])
                 self.assertTrue(isinstance(response_data[0]['campaign'], str), msg=endpoint_name)
                 self.assertTrue(isinstance(response_data[1]['campaign'], str), msg=endpoint_name)
-
                 self.assertEqual(
                     set(response.json()[0].keys()),
                     {'id', 'campaign', 'referrals_number', 'is_campaign_active', 'total_earned'},
@@ -96,7 +98,7 @@ class TestReferralStatsList(TestCase):
                 except NoReverseMatch:
                     continue
 
-                print(f'3) Test {endpoint_name}`s stats list API from unauthorized user.')
+                self.logger.info(f'3) Test {endpoint_name}`s stats list API from unauthorized user.')
 
                 self.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
                 self.assertEqual(response.json(), {'detail': 'Authentication credentials were not provided.'})
@@ -115,7 +117,7 @@ class TestReferralStatsList(TestCase):
                 except NoReverseMatch:
                     continue
 
-                print(f'2) Test {endpoint_name}`s stats list API (with outdated campaigns).')
+                self.logger.info(f'2) Test {endpoint_name}`s stats list API (with outdated campaigns).')
 
                 response_data = response.json()
                 self.assertEqual(response.status_code, HTTPStatus.OK)
