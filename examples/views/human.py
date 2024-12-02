@@ -9,7 +9,7 @@ from ..serializers.human import ReferralStatListSerializer
 
 
 class ReferralStatListView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated]
     serializer_class = ReferralStatListSerializer
 
     def get_queryset(self):

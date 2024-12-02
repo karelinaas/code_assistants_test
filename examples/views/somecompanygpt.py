@@ -11,7 +11,7 @@ class ReferralStatsListAPIView(ListAPIView):
     queryset = ReferralStat.objects.all().order_by('-id')
 
     # Правка 1 из 7: потерял permission_classes
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         # Правка 2 из 7: зачем-то искал пользователя еще раз по е-мейлу, хотя он уже есть в self.request

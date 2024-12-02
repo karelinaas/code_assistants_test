@@ -4,7 +4,7 @@ from django.db.models import BooleanField, Case, When
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
-# Правка 2 из 4: был лишний импорт модели Campaign
+# Правка 2 из 3: был лишний импорт модели Campaign
 from referrals.models import ReferralStat
 from ..serializers.gigacode import ReferralStatSerializer
 
@@ -15,8 +15,7 @@ class ReferralStatViewSet(ModelViewSet):
     serializer_class = ReferralStatSerializer
 
     def get_queryset(self):
-        # Правка 1 из 4: помощник накосячил с полями в сериализаторе, поэтому считаю за него is_campaign_active тут
-        # Правка 3 из 4: потерялся order_by
+        # Правка 1 из 3: помощник накосячил с полями в сериализаторе, поэтому считаю за него is_campaign_active тут
         return self.queryset.filter(affiliate=self.request.user).annotate(
             is_campaign_active=Case(
                 When(
@@ -27,4 +26,4 @@ class ReferralStatViewSet(ModelViewSet):
                 default=False,
                 output_field=BooleanField(),
             )
-        ).order_by('-pk')
+        )

@@ -4,11 +4,11 @@ from referrals.models import ReferralStat
 
 
 class ReferralStatSerializer(serializers.ModelSerializer):
-    # Правка 1 из 4: помощник использовал несуществующий у модели метод .is_active()
+    # Правка 1 из 3: помощник использовал несуществующий у модели метод .is_active()
     # is_campaign_active = serializers.SerializerMethodField()
     is_campaign_active = serializers.BooleanField()
     total_earned = serializers.SerializerMethodField()
-    # Правка 4 из 4: вместо имени программы возвращалось ID
+    # Правка 3 из 3: вместо имени программы возвращалось ID
     campaign = serializers.CharField(source='campaign.title')
 
     class Meta:
