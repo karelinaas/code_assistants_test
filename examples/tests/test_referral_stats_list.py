@@ -86,7 +86,7 @@ class TestReferralStatsList(TestCase):
                 self.assertTrue(isinstance(response_data[0]['campaign'], str), msg=endpoint_name)
                 self.assertTrue(isinstance(response_data[1]['campaign'], str), msg=endpoint_name)
                 self.assertEqual(
-                    set(response.json()[0].keys()),
+                    set(response_data[0].keys()),
                     {'id', 'campaign', 'referrals_number', 'is_campaign_active', 'total_earned'},
                 )
 
