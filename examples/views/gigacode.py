@@ -21,6 +21,7 @@ class ReferralStatViewSet(ModelViewSet):
                 When(
                     campaign__active_since__lte=datetime.today(),
                     campaign__active_till__gte=datetime.today(),
+                    campaign__is_deactivated=False,
                     then=True,
                 ),
                 default=False,
